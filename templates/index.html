@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Trados: база переводов</h1>
+
+    {% if message %}
+        <div>
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div class="form-container">
+        <!-- Форма для добавления предложений и слов -->
+        <div class="form-left">
+            <h2>Добавить перевод</h2>
+            <form action="/" method="post">
+                <label for="original">Оригинал:</label><br>
+                <input type="text" name="original" required><br><br>
+                <label for="translated">Перевод:</label><br>
+                <input type="text" name="translated" required><br><br>
+                <button type="submit" name="add_translation">Внести данные</button>
+            </form>
+        </div>
+
+        <!-- Форма для добавления файлов -->
+        <div class="form-right">
+            <h2>Добавить файлы с переводами</h2>
+            <form action="/" method="post" enctype="multipart/form-data">
+                <label for="original_file">Файл оригинала:</label><br>
+                <input type="file" name="original_file" required><br><br>
+                <label for="translated_file">Файл перевода:</label><br>
+                <input type="file" name="translated_file" required><br><br>
+                <button type="submit" name="add_file">Внести файлы</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="translate-section">
+        <h2>Перевести предложение</h2>
+        <form action="/" method="post">
+            <label for="original_input">Введите предложение или слово:</label><br>
+            <input type="text" name="original_input" required><br><br>
+            <button type="submit" name="translate">Найти перевод</button>
+        </form>
+    </div>
+
+    {% if top_translations %}
+        <h3>Топ 3 перевода для "{{ original_input }}":</h3>
+        <ul>
+            {% for score, translation in top_translations %}
+                <li>{{ translation }} (Совпадение: {{ score }}%)</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
