@@ -1,0 +1,91 @@
+/* Общие стили для всего сайта */
+body {
+    background-color: #e0f7fa;  /* Нежно-голубой фон */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Центрируем заголовок */
+h1 {
+    text-align: center;
+    padding-top: 50px;
+    font-size: 2.5em;
+    color: #00796b; /* Тёмно-зеленый цвет */
+}
+
+/* Стили для блоков с формами */
+form {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+/* Разделение форм для предложений и файлов */
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.form-container .form-left, .form-container .form-right {
+    width: 45%;
+}
+
+/* Стили для полей ввода */
+input[type="text"], input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #00796b;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* Стили для кнопок */
+button {
+    background-color: #00796b; /* Тёмно-зеленая кнопка */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #004d40; /* Темно-зеленый при наведении */
+}
+
+/* Стили для сообщения */
+div {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: green;
+}
+
+/* Стили для блока перевода */
+#translate-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Стили для результата перевода */
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+ul li {
+    background-color: #ffffff;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
