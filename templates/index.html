@@ -1,62 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trados</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-    <h1>Trados: база переводов</h1>
 
-    {% if message %}
-        <div>
-            {{ message }}
-        </div>
+<body>
+    <h1>Trados - Переводчик</h1>
+
+    <form method="POST">
+        <textarea name="text_input" rows="4" cols="50"></textarea><br>
+        <input type="hidden" name="action_type" value="translate_sentence">
+        <button type="submit">Перевести предложение</button>
+    </form>
+
+    <form method="POST">
+        <input type="text" name="word_input" placeholder="Введите слово">
+        <input type="hidden" name="action_type" value="translate_word">
+        <button type="submit">Перевести отдельное слово</button>
+    </form>
+
+    {% if word_translation %}
+    <h3>Результат:</h3>
+    <p>{{ word_translation[0] }} - {{ word_translation[1] }}</p>
+    {% elif top_sentences %}
+    <h3>Предложения с этим словом:</h3>
+    <ul>
+        {% for score, english_sentence, russian_sentence in top_sentences %}
+        <li>{{ english_sentence }} - {{ russian_sentence }} (Совпадение: {{ score }}%)</li>
+        {% endfor %}
+    </ul>
+
+    <form method="POST">
+        <input type="text" name="english_word" value="{{ word_input }}" placeholder="Слово на английском">
+        <input type="text" name="russian_word" placeholder="Перевод на русский">
+        <input type="hidden" name="action_type" value="add_word_translation">
+        <button type="submit">Добавить перевод слова</button>
+    </form>
     {% endif %}
 
-    <div class="form-container">
-        <!-- Форма для добавления предложений и слов -->
-        <div class="form-left">
-            <h2>Добавить перевод</h2>
-            <form action="/" method="post">
-                <label for="original">Оригинал:</label><br>
-                <input type="text" name="original" required><br><br>
-                <label for="translated">Перевод:</label><br>
-                <input type="text" name="translated" required><br><br>
-                <button type="submit" name="add_translation">Внести данные</button>
-            </form>
-        </div>
 
-        <!-- Форма для добавления файлов -->
-        <div class="form-right">
-            <h2>Добавить файлы с переводами</h2>
-            <form action="/" method="post" enctype="multipart/form-data">
-                <label for="original_file">Файл оригинала:</label><br>
-                <input type="file" name="original_file" required><br><br>
-                <label for="translated_file">Файл перевода:</label><br>
-                <input type="file" name="translated_file" required><br><br>
-                <button type="submit" name="add_file">Внести файлы</button>
-            </form>
-        </div>
+    {% if text_input %}
+    <h2>Ваш запрос: "{{ text_input }}"</h2>
+
+    <div>
+        <h3>Слова в предложениях:</h3>
+        <p>
+            {% for word, english_word, russian_translation, score in matched_words %}
+            <span class="highlighted" title="{{ english_word }} - {{ russian_translation }}">{{ word }}</span>
+            {% endfor %}
+        </p>
     </div>
 
-    <div id="translate-section">
-        <h2>Перевести предложение</h2>
-        <form action="/" method="post">
-            <label for="original_input">Введите предложение или слово:</label><br>
-            <input type="text" name="original_input" required><br><br>
-            <button type="submit" name="translate">Найти перевод</button>
+    <div>
+        <h3>Похожие переводы:</h3>
+        <ul>
+            {% for score, english_sentence, russian_translation in best_matches %}
+            <li>{{ english_sentence }} - {{ russian_translation }} (Совпадение: {{ score }}%)</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <form method="POST">
+        <input type="text" name="english_sentence" value="{{ text_input }}" placeholder="Введите перевод">
+        <input type="text" name="russian_sentence" placeholder="Перевод на русский">
+        <input type="hidden" name="action_type" value="sentence_translate">
+        <button type="submit">Сохранить перевод</button>
+    </form>
+    {% endif %}
+
+    <!-- Кнопка для просмотра СЛОВАРНЫХ переводов -->
+    <button onclick="document.getElementById('glossary_entries').style.display = 'block'">
+        Посмотреть переводы слов
+    </button>
+    <div id="glossary_entries" style="display:none;">
+    <h3>Словарные переводы:</h3>
+    <ul>
+        {% if glossary_entries %}
+            {% for entry in glossary_entries %}
+                <li>ID: {{ entry[0] }} - {{ entry[1] }}{{ entry[2] }}</li>
+            {% endfor %}
+        {% else %}
+            <li>Нет данных в словаре.</li>
+        {% endif %}
+    </ul>
+    </div>
+
+    <!-- Форма для редактирования перевода по индексу -->
+    <button onclick="document.getElementById('edit_translation_form').style.display = 'block'">Изменить перевод</button>
+    <div id="edit_translation_form" style="display:none;">
+        <h3>Введите индекс перевода для изменения:</h3>
+        <form method="POST">
+            <label for="translation_id">Введите ID перевода:</label>
+            <input type="number" name="translation_id" required>
+            <input type="hidden" name="action_type" value="load_translation_for_editing">
+            <button type="submit">Загрузить перевод</button>
         </form>
     </div>
 
-    {% if top_translations %}
-        <h3>Топ 3 перевода для "{{ original_input }}":</h3>
-        <ul>
-            {% for score, translation in top_translations %}
-                <li>{{ translation }} (Совпадение: {{ score }}%)</li>
-            {% endfor %}
-        </ul>
+    {% if translation_to_edit %}
+    <h3>Редактирование перевода:</h3>
+    <form method="POST">
+        <input type="hidden" name="translation_id" value="{{ translation_to_edit[0] }}">
+        <input type="text" name="updated_english" value="{{ translation_to_edit[1] }}" required>
+        <input type="text" name="updated_russian" value="{{ translation_to_edit[2] }}" required>
+        <input type="hidden" name="action_type" value="update_translation">
+        <button type="submit">Сохранить изменения</button>
+    </form>
     {% endif %}
 </body>
+
 </html>
