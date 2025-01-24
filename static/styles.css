@@ -1,91 +1,101 @@
-/* Общие стили для всего сайта */
+/* Основные стили для страницы */
 body {
-    background-color: #e0f7fa;  /* Нежно-голубой фон */
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-/* Центрируем заголовок */
 h1 {
     text-align: center;
-    padding-top: 50px;
-    font-size: 2.5em;
-    color: #00796b; /* Тёмно-зеленый цвет */
+    color: #4CAF50;
 }
 
-/* Стили для блоков с формами */
+/* Стили для форм */
 form {
-    margin: 20px;
+    background: #fff;
     padding: 20px;
+    margin: 20px auto;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
 }
 
-/* Разделение форм для предложений и файлов */
-.form-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.form-container .form-left, .form-container .form-right {
-    width: 45%;
-}
-
-/* Стили для полей ввода */
-input[type="text"], input[type="file"] {
-    width: 100%;
+textarea,
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 20px);
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #00796b;
-    border-radius: 4px;
-    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-/* Стили для кнопок */
 button {
-    background-color: #00796b; /* Тёмно-зеленая кнопка */
+    background-color: #4CAF50;
     color: white;
     border: none;
     padding: 10px 20px;
-    font-size: 1.1em;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
-    width: 100%;
-    transition: background-color 0.3s;
+    transition: background 0.3s ease;
 }
 
 button:hover {
-    background-color: #004d40; /* Темно-зеленый при наведении */
+    background-color: #45a049;
 }
 
-/* Стили для сообщения */
-div {
-    text-align: center;
-    margin-top: 20px;
-    font-weight: bold;
-    color: green;
+/* Стили для результатов и сообщений */
+h3 {
+    color: #333;
 }
 
-/* Стили для блока перевода */
-#translate-section {
-    text-align: center;
-    margin-top: 40px;
-}
-
-/* Стили для результата перевода */
-ul {
-    list-style-type: none;
-    padding: 0;
-    text-align: center;
-}
-
-ul li {
-    background-color: #ffffff;
+p {
+    font-size: 18px;
     margin: 10px 0;
+}
+
+.highlighted {
+    background-color: #ffeb3b;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #fff;
     padding: 10px;
+    margin-bottom: 5px;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для скрытых блоков */
+#sentence_translations,
+#edit_translation_form {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Сообщения об ошибках и успехах */
+.success-message {
+    color: green;
+    font-weight: bold;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
 }
