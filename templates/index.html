@@ -71,21 +71,18 @@
     </form>
     {% endif %}
 
-    <!-- Кнопка для просмотра СЛОВАРНЫХ переводов -->
-    <button onclick="document.getElementById('glossary_entries').style.display = 'block'">
-        Посмотреть переводы слов
-    </button>
-    <div id="glossary_entries" style="display:none;">
-    <h3>Словарные переводы:</h3>
-    <ul>
-        {% if glossary_entries %}
-            {% for entry in glossary_entries %}
-                <li>ID: {{ entry[0] }} - {{ entry[1] }}{{ entry[2] }}</li>
+    <!-- Кнопка для просмотра переводов -->
+    <button onclick="document.getElementById('sentence_translations').style.display = 'block'">Посмотреть все
+        переводы</button>
+    <div id="sentence_translations" style="display:none;">
+        <h3>Сохранённые переводы:</h3>
+        <ul>
+            {% for translation in sentence_translations %}
+            <li>
+                ID: {{ translation[0] }} - {{ translation[1] }} ({{ translation[2] }})
+            </li>
             {% endfor %}
-        {% else %}
-            <li>Нет данных в словаре.</li>
-        {% endif %}
-    </ul>
+        </ul>
     </div>
 
     <!-- Форма для редактирования перевода по индексу -->
